@@ -5,17 +5,20 @@ public class Result : IResult
     // başarı durumunu ve mesajı döndürmek için
     // Result contructor'ını overload ediyoruz bu sayede : 
     // Sadece başarılı durumunu(status) göndermek isteyen için 
-    // veya Sadece mesaj göndermek isteyen veya başarılı durumunu(status) veya mesajı da göndermek isteyen için.   3 durum
+    // veya Sadece mesaj göndermek isteyen veya başarılı durumunu(status) veya mesajı da göndermek isteyen için. 3 durum 
     // referans nesne oluşturulduğunda-çalıştığında gelen paremetreye göre dinamik çalışsın
-    public Result(bool success, string message) : this(message)
+    // burda eğer iki parametre gönderilirse, this diyerek tek parametreli constructor'ın da çalışmasını sağlıyoruz
+    //  success i aşağıda set ediyoruz : set metodu verilmeyen proplar constructor ile set edilebilir
+    //
+    public Result(bool success, string message) : this(success) 
     {
-        this.Success = success; 
+        this.Message = message; 
     }
      
     // sadece Mesajı döndür
-    public Result(string message)
+    public Result(bool success)
     {
-        this.Message = message; 
+        this.Success = success; 
     }
     
     public bool Success { get; }

@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -16,39 +17,52 @@ public class ProductManager : IProductService
         _productDal = productDal;
     }
     
-    public List<Product> GetAll()
-    {
-        // bir iş sınıfı başka sınıfları new lemez !! 
+    public IDataResult<List<Product>> GetAll()
+    { 
+        // bir iş sınıfı başka sını fları new lemez !! 
         // eğer iş kurallarını geçtiyse  sonra 
         // artık dal katmanı çağrılır
-        
-        return _productDal.GetAll();   
+
+        if (DateTime.Now.Hour == 22)
+        {
+            return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+        }
+
+        return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);  
     }
 
-    public List<Product> GetAllByCategoryId(int id)
+    public IDataResult<List<Product>> GetAllByCategoryId(int id)
     {
-        return _productDal.GetAll(x => x.CategoryId == id);
+        return new SuccessDataResult<List<Product>>(_productDal.GetAll(x => x.CategoryId == id));
     }
 
-    public List<Product> GetAllByUnitPrice(decimal min, decimal max)
+    public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max) 
     {
-        return _productDal.GetAll(x => x.UnitPrice  >= min && x.UnitPrice <= max); 
+        return new SuccessDataResult<List<Product>>(_productDal.GetAll(x => x.UnitPrice  >= min && x.UnitPrice <= max));  
     }
 
-    public List<ProductDetailDto> GetProductDetail()
+    public IDataResult<List<ProductDetailDto>> GetProductDetails()
     {
-        return _productDal.GetProductDetails();
+        if (DateTime.Now.Hour == 11)
+        {
+            return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime); 
+        }
+        return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()) ;
     }
 
     public IResult Add(Product product)
     {
+        if (product.ProductName.Length<2)
+        {
+            return new ErrorResult(Messages.ProductNameInvalid);
+        }
         // business codes
          _productDal.Add(product);
-         return new Result(true, "Ürün Başarıyla Eklendi");  
+         return new SuccessResult(Messages.ProductAdded);  
     }
 
-    public Product GetById(int productId)
+    public IDataResult<Product> GetById(int productId)
     {
-        return _productDal.Get(p => p.ProductId == productId);
+        return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
     }
 }

@@ -29,16 +29,27 @@ class Program
                 
                 // DTO Data Transformation Object
 
-                List<ProductDetailDto> productDetail = productManager.GetProductDetail();
+                var result = productManager.GetProductDetails();
 
-                foreach (var productDetailData in productDetail)
+                if (result.Success == true)
                 {
-                    Console.WriteLine("Ürün ismi :"+productDetailData.ProductName +" Ürün Kategorisi :"+productDetailData.CategoryName);
+                    foreach (var productDetailData in result.Data )
+                    {
+                        Console.WriteLine("Ürün ismi :"+productDetailData.ProductName +" Ürün Kategorisi :"+productDetailData.CategoryName);
+                    }
                 }
+                else
+                {
+                    Console.WriteLine(result.Message);
+                }
+                
+                
 
-        #endregion
+                
 
-        #region CategorManager
+        #endregion 
+
+        /*#region CategorManager
         
         // IOC Container ile bu çözülecek
         CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
@@ -52,7 +63,7 @@ class Program
         Category cat = categoryManager.GetById(5);
         Console.WriteLine("Tekil Kategori ismi :"+cat.CategoryName);
         
-        #endregion
+        #endregion*/
 
     }
 }
