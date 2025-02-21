@@ -1,3 +1,8 @@
+using Business.Abstract;
+using Business.Concrete;
+using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Servisler Singleton Design Pattern
+builder.Services.AddSingleton<IProductService, ProductManager>();
+builder.Services.AddSingleton<IProductDal, EfProductDal>();
 
 var app = builder.Build();
 

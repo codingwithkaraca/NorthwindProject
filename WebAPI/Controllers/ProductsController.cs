@@ -14,6 +14,10 @@ namespace WebAPI.Controllers
     {
         private IProductService _productService;
 
+        //loosyly coupled
+        //naming convension 
+        //IOC Container ile buraya somut bir referans  göndereceğiz.
+        //Inversion of Control
         public ProductsController(IProductService productService)
         {
             _productService = productService;
