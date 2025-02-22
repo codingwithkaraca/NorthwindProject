@@ -11,7 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Servisler Singleton Design Pattern
+// ileride burası Autofac, Ninject, CastleWindsur, StructureMap, LightInject, DryInject teknolojileri kulllanılarak
+// geliştirilebilir --> IOC 
+// AOP(Aspect Oriented Programming)
+//Servisler, Singleton Design Pattern
 builder.Services.AddSingleton<IProductService, ProductManager>();
 builder.Services.AddSingleton<IProductDal, EfProductDal>();
 

@@ -23,9 +23,9 @@ public class ProductManager : IProductService
         // eğer iş kurallarını geçtiyse  sonra 
         // artık dal katmanı çağrılır
 
-        if (DateTime.Now.Hour == 22)
+        if (DateTime.Now.Hour == 23)
         {
-            return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+            return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime); 
         }
 
         return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);  
@@ -43,10 +43,6 @@ public class ProductManager : IProductService
 
     public IDataResult<List<ProductDetailDto>> GetProductDetails()
     {
-        if (DateTime.Now.Hour == 11)
-        {
-            return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime); 
-        }
         return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()) ;
     }
 
