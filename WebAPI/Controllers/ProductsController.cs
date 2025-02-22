@@ -23,6 +23,8 @@ namespace WebAPI.Controllers
             _productService = productService;
         }
         
+        //[HttpGet("getall")] bu şekilde kullanım daha popülerdir.
+        
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
