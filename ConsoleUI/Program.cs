@@ -10,7 +10,7 @@ class Program
 {
     public static void Main(string[] args)
     {
-        #region ProductManager
+        /*#region ProductManager
         
                 ProductManager productManager = new ProductManager(new EfProductDal());
 
@@ -25,7 +25,7 @@ class Program
                 foreach (var item in productManager.GetAllByCategoryId(8))
                 {
                     Console.WriteLine("Category 8 "+ item.ProductName);
-                }*/ 
+                }#1# 
                 
                 // DTO Data Transformation Object
 
@@ -47,7 +47,7 @@ class Program
 
                 
 
-        #endregion 
+        #endregion */
 
         /*#region CategorManager
         

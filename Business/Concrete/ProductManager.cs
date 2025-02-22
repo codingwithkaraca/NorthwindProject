@@ -1,6 +1,8 @@
 using System.Linq.Expressions;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -48,10 +50,14 @@ public class ProductManager : IProductService
 
     public IResult Add(Product product)
     {
-        if (product.ProductName.Length<2)
-        {
-            return new ErrorResult(Messages.ProductNameInvalid);
-        }
+        // validations 
+        ValidationTool.Validate(new ProductValidator(), product);
+        
+        //Loglama
+        //Cacheremove
+        // Performance
+        // Transaction
+        // Yetkilendirme
         // business codes
          _productDal.Add(product);
          return new SuccessResult(Messages.ProductAdded);  

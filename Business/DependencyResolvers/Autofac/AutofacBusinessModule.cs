@@ -1,8 +1,10 @@
 using Autofac;
 using Business.Abstract;
 using Business.Concrete;
+using Business.ValidationRules.FluentValidation;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using FluentValidation;
 
 namespace Business.DependencyResolvers.Autofac;
 
@@ -17,5 +19,6 @@ public class AutofacBusinessModule : Module
         // Tek instance oluşturuyoruz. AddSingleton -> SingleInstance
         builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
         builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+        builder.RegisterType<ProductValidator >().As<IValidator>().SingleInstance();
     }
 }
