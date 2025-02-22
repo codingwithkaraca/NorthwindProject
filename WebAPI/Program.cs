@@ -28,6 +28,8 @@ containerBuilder.RegisterModule(new AutofacBusinessModule());
 var container = containerBuilder.Build();
 
 // IServiceProvider olarak Autofac kullanacağız 
+// ileride Autofac yerine başka bir teknoloji kullanırsak Business'de yeni teknoloji ile Modulü oluştur
+// new AutofacServiceProviderFactory() olan yerleri yeni teknoloji ile değiştir.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(contBuilder =>
 {
