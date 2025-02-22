@@ -1,12 +1,12 @@
-using Business.Abstract;
-using Business.Concrete;
-using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Business.DependencyResolvers.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Autofac için containerBuilder oluşturdum
+var containerBuilder = new ContainerBuilder();
+// varsayılan .net core servisleri
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,8 +15,24 @@ builder.Services.AddSwaggerGen();
 // geliştirilebilir --> IOC 
 // AOP(Aspect Oriented Programming)
 //Servisler, Singleton Design Pattern
-builder.Services.AddSingleton<IProductService, ProductManager>();
-builder.Services.AddSingleton<IProductDal, EfProductDal>();
+// builder.Services.AddSingleton<IProductService, ProductManager>();
+// builder.Services.AddSingleton<IProductDal, EfProductDal>();
+
+// yukarıdaki mevcut servis koleksiyonunu Autofac'e aktarıyoruz.
+containerBuilder.Populate(builder.Services);
+
+// Business a yazdığım modülü kayıt ediyorum 
+containerBuilder.RegisterModule(new AutofacBusinessModule());
+
+// Container'ı oluşturuyorum  
+var container = containerBuilder.Build();
+
+// IServiceProvider olarak Autofac kullanacağız 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(contBuilder =>
+{
+    contBuilder.RegisterModule(new AutofacBusinessModule());
+});
 
 var app = builder.Build();
 
@@ -28,33 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.MapControllers();
-// bu kodu eklemezsek .net core controller tabanlı api endpointlerini görmez 404 döndür
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+// bu kodu eklemezsek .net core, controller tabanlı api endpointlerini görmez 404 döndürür
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
