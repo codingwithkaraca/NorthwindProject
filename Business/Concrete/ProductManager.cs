@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -48,10 +49,12 @@ public class ProductManager : IProductService
         return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()) ;
     }
 
-    public IResult Add(Product product)
+    // Bu Attribute'u kullanarak productValidator kullanarak Add metotunu doğrula
+    [ValidationAspect(typeof(ProductValidator))]
+    public IResult Add(Product product) 
     {
         // validations 
-        ValidationTool.Validate(new ProductValidator(), product);
+        // aspect ekleyerek Attribute ile çözüldü 
         
         
         //Loglama

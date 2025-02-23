@@ -1,7 +1,10 @@
 using Autofac;
+using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
 using Business.ValidationRules.FluentValidation;
+using Castle.DynamicProxy;
+using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using FluentValidation;
@@ -19,6 +22,14 @@ public class AutofacBusinessModule : Module
         // Tek instance oluşturuyoruz. AddSingleton -> SingleInstance
         builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
         builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
-        builder.RegisterType<ProductValidator >().As<IValidator>().SingleInstance();
+        
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+        builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+            .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+            {
+                Selector = new AspectInterceptorSelector()
+            }).SingleInstance();
+        
     }
 }
