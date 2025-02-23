@@ -53,6 +53,7 @@ public class ProductManager : IProductService
         // validations 
         ValidationTool.Validate(new ProductValidator(), product);
         
+        
         //Loglama
         //Cacheremove
         // Performance

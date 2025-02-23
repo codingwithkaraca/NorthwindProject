@@ -17,7 +17,7 @@ public class ProductValidator : AbstractValidator<Product>
         RuleFor(p => p.UnitPrice).GreaterThanOrEqualTo(10).When(p => p.CategoryId == 1);
         
         // FluentValidationda olmayan bir kural varsa kendimiz yazmak için
-        RuleFor(p => p.ProductName).Must(StartWithA);
+        RuleFor(p => p.ProductName).Must(StartWithA).WithMessage("Ürün ismi A ile başlamalı");
         
     }
 
