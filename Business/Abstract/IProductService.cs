@@ -15,4 +15,5 @@ public interface IProductService
     
     // void dönen fonklar için IResult
     IResult Add(Product product); 
+    IResult Update(Product product); 
 }

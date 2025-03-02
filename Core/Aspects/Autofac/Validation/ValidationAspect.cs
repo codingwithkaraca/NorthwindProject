@@ -5,10 +5,10 @@ using FluentValidation;
 
 namespace Core.Aspects.Autofac.Validation;
 
-public class ValidationAspect:MethodInterception
+public class ValidationAspect : MethodInterception
 {
     private Type _validatorType;
-    public ValidationAspect(Type validatorType)
+    public ValidationAspect(Type validatorType) 
     {
         // gönderilen validatorType IValidator değil ise hata döndür
         if (!typeof(IValidator).IsAssignableFrom(validatorType))
