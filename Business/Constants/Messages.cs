@@ -12,4 +12,5 @@ public static class Messages
     public static string ProductNameInvalid = "Ürün ismi geçersiz";
     public static string MaintenanceTime = "Sitem bakım zamanı";
     public static string ProductsListed = "Ürünler listelendi";
+    public static string? AuthorizationDenied = "Yetkiniz yok." ;
 }

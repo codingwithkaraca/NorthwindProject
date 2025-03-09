@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -58,11 +59,17 @@ public class ProductManager : IProductService
     }
 
     // Bu Attribute'u kullanarak productValidator kullanarak Add metotunu doğrula
+    [SecuredOperation("product.add, admin")]
     [ValidationAspect(typeof(ProductValidator))]
     public IResult Add(Product product) 
     {
-        // validations 
-        // aspect ekleyerek Attribute ile çözüldü 
+        // 
+        /*  validations
+            aspect ile metot başında Attribute ile yaptık */
+        
+        /*  authorization
+            aspect ile metot başında Attribute ile yaptık */
+        
         // Loglama
         // Cacheremove
         // Performance
