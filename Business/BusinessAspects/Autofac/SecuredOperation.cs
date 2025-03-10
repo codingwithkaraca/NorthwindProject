@@ -17,6 +17,7 @@ public class SecuredOperation : MethodInterception
     public SecuredOperation(string roles)
     {
         _roles = roles.Split(',');
+        // burada apiden "cannot be null" hatası alıyorum 
         _httpContextAccessor =  ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
     }
 

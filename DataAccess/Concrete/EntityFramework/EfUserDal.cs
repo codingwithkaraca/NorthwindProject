@@ -17,7 +17,7 @@ public class EfUserDal : EfEntityRepositoryBase<User, NorthwindContext>, IUserDa
                 select new OperationClaim {Id = operationClaim.Id, Name = operationClaim.Name};
             return result.ToList();
 
-        }
+        } 
     }
 }
 
