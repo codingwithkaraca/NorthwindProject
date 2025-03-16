@@ -3,6 +3,7 @@ using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -24,6 +25,8 @@ public class ProductManager : IProductService
         _categoryService = categoryService;
     }
     
+    /* .net 8 Cashingde EntriesCollection özelliğini desteklemediği için CashAspect kullanımlarını kaldırdım  */
+    // [CacheAspect]
     public IDataResult<List<Product>> GetAll()
     { 
         // bir iş sınıfı başka sını fları new lemez !! 
@@ -53,6 +56,7 @@ public class ProductManager : IProductService
         return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()) ;
     }
     
+    // [CacheAspect] 
     public IDataResult<Product> GetById(int productId)
     {
         return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
@@ -61,6 +65,7 @@ public class ProductManager : IProductService
     // Bu Attribute'u kullanarak productValidator kullanarak Add metotunu doğrula
     [SecuredOperation("product.add, admin")]
     [ValidationAspect(typeof(ProductValidator))]
+    // [CacheRemoveAspect("IProductService.Get")] 
     public IResult Add(Product product) 
     {
         // 
@@ -91,6 +96,7 @@ public class ProductManager : IProductService
     }
 
     [ValidationAspect(typeof(ProductValidator))]
+    /*[CacheRemoveAspect("IProductService.Get")]*/
     public IResult Update(Product product)
     {
         _productDal.Add(product);
